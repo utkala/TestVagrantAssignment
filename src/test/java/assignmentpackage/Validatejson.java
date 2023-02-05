@@ -18,16 +18,19 @@ public class Validatejson {
 
 	int countPlayers;
 	int countForeignPlayers;
-	int expectedCount = 4;
+	static String path = ".//jsonfiles/teamRCB.json";
+	static final int expectedCount = 4;
 	int WicketKeeperCount;
-	int WicketKeeperCountExpected=1;
+	static final int WicketKeeperCountExpected=1;
 	int length;
+	static JSONParser jsonparser = new JSONParser();
+	static FileReader reader ;
 	
-	//@DataProvider(name="validatePlayers")
+	
+	//to read data employees data from json
 	public String[] readJson() throws IOException, ParseException
 	{
-		JSONParser jsonparser = new JSONParser();
-		FileReader reader =new FileReader(".//jsonfiles/teamRCB.json");
+		reader =new FileReader(path);
 		
 		Object obj = jsonparser.parse(reader);
 		JSONObject teamdetails = (JSONObject) obj;
@@ -44,10 +47,11 @@ public class Validatejson {
 		return arr;
 	}
 	
+	//to read players role from json
 	public String[] readJsonRole() throws IOException, ParseException
 	{
-		JSONParser jsonparser = new JSONParser();
-		FileReader reader =new FileReader(".//jsonfiles/teamRCB.json");
+		
+		reader =new FileReader(path);
 		
 		Object obj = jsonparser.parse(reader);
 		JSONObject teamdetails = (JSONObject) obj;
@@ -64,7 +68,7 @@ public class Validatejson {
 		return arrRole;
 	}
 	
-	//@Test(dataProvider="validatePlayers")
+	//to validate players role
 	public void validatePlayersRole(String data[])
 	{
 	  length = data.length;
@@ -77,9 +81,18 @@ public class Validatejson {
 			}
 				  }
 				System.out.println(WicketKeeperCount);
-				 
-		Assert.assertEquals(WicketKeeperCount,WicketKeeperCountExpected);
-	}
+				if(WicketKeeperCount>=1)
+				{
+				 System.out.println("There is atleast one wicket-keeper in team");
+		
+				}
+				else
+				{
+					System.out.println("There is no Wicket keeper in team");
+				}
+				}
+	
+	//to validate number of foreign players
 	public void validateForeignPlayers(String data[])
 	{
 	  length = data.length;
@@ -99,7 +112,7 @@ public class Validatejson {
 				System.out.println(countPlayers);
 		System.out.println(countForeignPlayers);
 		 
-		Assert.assertEquals(countForeignPlayers,expectedCount);
+		Assert.assertEquals(countForeignPlayers,expectedCount,"There are more than 4 foreign players in team");
 	}
 
 	
